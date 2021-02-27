@@ -78,26 +78,6 @@ class Ui(QtWidgets.QMainWindow):
         msg.exec()
         sys.exit(0)
 
-    def load_ui(self) -> None:
-        uic.loadUi("aufgaben.ui", self)
-
-        self.button_quit = self.findChild(QtWidgets.QPushButton, "button_quit")
-        self.button_quit.clicked.connect(self.quit_pressed)
-
-        self.group_aufgabe = self.findChild(QtWidgets.QGroupBox, "group_aufgabe")
-
-        self.label_a = self.findChild(QtWidgets.QLabel, "label_a")
-        self.label_b = self.findChild(QtWidgets.QLabel, "label_b")
-        self.label_op = self.findChild(QtWidgets.QLabel, "label_op")
-        self.button_loesen = self.findChild(QtWidgets.QPushButton, "button_loesen")
-        self.button_loesen.clicked.connect(self.auswerten)
-
-        self.label_richtig = self.findChild(QtWidgets.QLabel, "label_richtig")
-
-        self.statusbar = self.findChild(QtWidgets.QStatusBar, "statusbar")
-
-        self.feld_antwort = self.findChild(QtWidgets.QLineEdit, "feld_antwort")
-
     def auswerten(self) -> None:
         loesung: int
         text: str
@@ -135,7 +115,7 @@ class Ui(QtWidgets.QMainWindow):
         self.label_op.setText(str(self.aufgabe.op))
         self.label_b.setText(str(self.aufgabe.b))
 
-        title = f"Aufgabe {self.score.counter}/{self.score.target}"
+        title = f"Aufgabe {self.score.counter+1}/{self.score.target}"
         self.group_aufgabe.setTitle(title)
 
     def set_statusbar(self) -> None:
@@ -146,6 +126,26 @@ class Ui(QtWidgets.QMainWindow):
         self.set_statusbar()
         self.set_aufgabe()
         self.show()
+
+    def load_ui(self) -> None:
+        uic.loadUi("aufgaben.ui", self)
+
+        self.button_quit = self.findChild(QtWidgets.QPushButton, "button_quit")
+        self.button_quit.clicked.connect(self.quit_pressed)
+
+        self.group_aufgabe = self.findChild(QtWidgets.QGroupBox, "group_aufgabe")
+
+        self.label_a = self.findChild(QtWidgets.QLabel, "label_a")
+        self.label_b = self.findChild(QtWidgets.QLabel, "label_b")
+        self.label_op = self.findChild(QtWidgets.QLabel, "label_op")
+        self.button_loesen = self.findChild(QtWidgets.QPushButton, "button_loesen")
+        self.button_loesen.clicked.connect(self.auswerten)
+
+        self.label_richtig = self.findChild(QtWidgets.QLabel, "label_richtig")
+
+        self.statusbar = self.findChild(QtWidgets.QStatusBar, "statusbar")
+
+        self.feld_antwort = self.findChild(QtWidgets.QLineEdit, "feld_antwort")
 
     def __init__(self):
         super(Ui, self).__init__()
