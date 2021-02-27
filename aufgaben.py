@@ -69,7 +69,7 @@ class Ui(QtWidgets.QMainWindow):
     def quit_pressed(self) -> None:
         msg: QtWidgets.QMessageBox = QtWidgets.QMessageBox()
         msg.setText(
-            f"Von {self.score.counter} Aufgaben waren {self.score.counter} richtig."
+            f"Von {self.score.counter} Aufgaben waren {self.score.score} richtig."
         )
         msg.setWindowTitle("Endergebnis")
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
