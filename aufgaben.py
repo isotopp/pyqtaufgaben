@@ -17,16 +17,16 @@ class Aufgabe:
         if self.a < self.b:
             self.a, self.b = self.b, self.a
 
-        if self.op == '+':
+        if self.op == "+":
             self.loesung = self.a + self.b
-        if self.op == '-':
+        if self.op == "-":
             self.loesung = self.a - self.b
 
     def pruefen(self, loesung: int):
         return self.loesung == loesung
 
     def __init__(self):
-        self.allops = ['+', '-']
+        self.allops = ["+", "-"]
         self.ausdenken()
 
 
@@ -68,7 +68,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def quit_pressed(self):
         msg: QtWidgets.QMessageBox = QtWidgets.QMessageBox()
-        msg.setText(f"Von {self.score.counter} Aufgaben waren {self.score.counter} richtig.")
+        msg.setText(
+            f"Von {self.score.counter} Aufgaben waren {self.score.counter} richtig."
+        )
         msg.setWindowTitle("Endergebnis")
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.setDefaultButton(QtWidgets.QMessageBox.Ok)
@@ -77,24 +79,24 @@ class Ui(QtWidgets.QMainWindow):
         sys.exit(0)
 
     def load_ui(self):
-        uic.loadUi('aufgaben.ui', self)
+        uic.loadUi("aufgaben.ui", self)
 
-        self.button_quit = self.findChild(QtWidgets.QPushButton, 'button_quit')
+        self.button_quit = self.findChild(QtWidgets.QPushButton, "button_quit")
         self.button_quit.clicked.connect(self.quit_pressed)
 
-        self.group_aufgabe = self.findChild(QtWidgets.QGroupBox, 'group_aufgabe')
+        self.group_aufgabe = self.findChild(QtWidgets.QGroupBox, "group_aufgabe")
 
-        self.label_a = self.findChild(QtWidgets.QLabel, 'label_a')
-        self.label_b = self.findChild(QtWidgets.QLabel, 'label_b')
-        self.label_op = self.findChild(QtWidgets.QLabel, 'label_op')
-        self.button_loesen = self.findChild(QtWidgets.QPushButton, 'button_loesen')
+        self.label_a = self.findChild(QtWidgets.QLabel, "label_a")
+        self.label_b = self.findChild(QtWidgets.QLabel, "label_b")
+        self.label_op = self.findChild(QtWidgets.QLabel, "label_op")
+        self.button_loesen = self.findChild(QtWidgets.QPushButton, "button_loesen")
         self.button_loesen.clicked.connect(self.auswerten)
 
-        self.label_richtig = self.findChild(QtWidgets.QLabel, 'label_richtig')
+        self.label_richtig = self.findChild(QtWidgets.QLabel, "label_richtig")
 
-        self.statusbar = self.findChild(QtWidgets.QStatusBar, 'statusbar')
+        self.statusbar = self.findChild(QtWidgets.QStatusBar, "statusbar")
 
-        self.feld_antwort = self.findChild(QtWidgets.QLineEdit, 'feld_antwort')
+        self.feld_antwort = self.findChild(QtWidgets.QLineEdit, "feld_antwort")
 
     def auswerten(self) -> None:
         loesung = self.feld_antwort.text()
