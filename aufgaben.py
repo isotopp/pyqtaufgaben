@@ -10,7 +10,7 @@ class Aufgabe:
 
     loesung: int = 0
 
-    def ausdenken(self):
+    def ausdenken(self) -> None:
         self.op = choice(self.allops)
         self.a = randint(1, 11)
         self.b = randint(1, 11)
@@ -22,10 +22,10 @@ class Aufgabe:
         if self.op == "-":
             self.loesung = self.a - self.b
 
-    def pruefen(self, loesung: int):
+    def pruefen(self, loesung: int) -> bool:
         return self.loesung == loesung
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.allops = ["+", "-"]
         self.ausdenken()
 
@@ -35,14 +35,14 @@ class Score:
     counter: int = 0
     target: int = 10
 
-    def correct(self):
+    def correct(self) -> None:
         self.counter += 1
         self.score += 1
 
-    def incorrect(self):
+    def incorrect(self) -> None:
         self.counter += 1
 
-    def done(self):
+    def done(self) -> bool:
         return self.counter >= self.target
 
     def __init__(self):
@@ -66,7 +66,7 @@ class Ui(QtWidgets.QMainWindow):
 
     statusbar: QtWidgets.QStatusBar
 
-    def quit_pressed(self):
+    def quit_pressed(self) -> None:
         msg: QtWidgets.QMessageBox = QtWidgets.QMessageBox()
         msg.setText(
             f"Von {self.score.counter} Aufgaben waren {self.score.counter} richtig."
@@ -78,7 +78,7 @@ class Ui(QtWidgets.QMainWindow):
         msg.exec()
         sys.exit(0)
 
-    def load_ui(self):
+    def load_ui(self) -> None:
         uic.loadUi("aufgaben.ui", self)
 
         self.button_quit = self.findChild(QtWidgets.QPushButton, "button_quit")
@@ -99,12 +99,15 @@ class Ui(QtWidgets.QMainWindow):
         self.feld_antwort = self.findChild(QtWidgets.QLineEdit, "feld_antwort")
 
     def auswerten(self) -> None:
-        loesung = self.feld_antwort.text()
-        if loesung is None or loesung == "":
+        loesung: int
+        text: str
+
+        text = self.feld_antwort.text()
+        if text is None or text == "":
             return
 
         try:
-            loesung = int(loesung)
+            loesung = int(text)
         except ValueError:
             return
 
@@ -119,15 +122,15 @@ class Ui(QtWidgets.QMainWindow):
 
         self.label_richtig.setText(ergebnis)
         self.feld_antwort.setText("")
-        self.update()
+        self.alles_updaten()
 
         if self.score.done():
             self.quit_pressed()
         else:
             self.aufgabe.ausdenken()
-            self.update()
+            self.alles_updaten()
 
-    def set_aufgabe(self):
+    def set_aufgabe(self) -> None:
         self.label_a.setText(str(self.aufgabe.a))
         self.label_op.setText(str(self.aufgabe.op))
         self.label_b.setText(str(self.aufgabe.b))
@@ -135,11 +138,11 @@ class Ui(QtWidgets.QMainWindow):
         title = f"Aufgabe {self.score.counter}/{self.score.target}"
         self.group_aufgabe.setTitle(title)
 
-    def set_statusbar(self):
+    def set_statusbar(self) -> None:
         status = f"Aufgabe {self.score.counter}/{self.score.target}, {self.score.score} richtig."
         self.statusbar.showMessage(status)
 
-    def update(self):
+    def alles_updaten(self) -> None:
         self.set_statusbar()
         self.set_aufgabe()
         self.show()
@@ -150,7 +153,7 @@ class Ui(QtWidgets.QMainWindow):
         self.aufgabe = Aufgabe()
 
         self.load_ui()
-        self.update()
+        self.alles_updaten()
 
 
 app = QtWidgets.QApplication(sys.argv)
