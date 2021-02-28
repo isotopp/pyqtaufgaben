@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, uic
 import sys
+from typing import List
 from random import randint, choice
 
 
@@ -10,10 +11,12 @@ class Aufgabe:
 
     loesung: int = 0
 
+    allops: List[str]
+
     def ausdenken(self) -> None:
         self.op = choice(self.allops)
-        self.a = randint(1, 11)
-        self.b = randint(1, 11)
+        self.a = randint(1, 10)
+        self.b = randint(1, 10)
         if self.a < self.b:
             self.a, self.b = self.b, self.a
 
@@ -52,6 +55,9 @@ class Score:
 
 
 class Ui(QtWidgets.QMainWindow):
+    aufgabe: Aufgabe
+    score: Score
+
     button_quit: QtWidgets.QPushButton
 
     group_aufgabe: QtWidgets.QGroupBox
@@ -63,6 +69,8 @@ class Ui(QtWidgets.QMainWindow):
     feld_antwort: QtWidgets.QLineEdit
 
     label_richtig: QtWidgets.QLabel
+    fortschritt_richtig: QtWidgets.QProgressBar
+    fortschritt_total: QtWidgets.QProgressBar
 
     statusbar: QtWidgets.QStatusBar
 
@@ -91,8 +99,6 @@ class Ui(QtWidgets.QMainWindow):
         except ValueError:
             return
 
-        print(f"auswerten: loesung={loesung}, aufgabe.loesung={self.aufgabe.loesung}")
-
         if self.aufgabe.pruefen(loesung):
             self.score.correct()
             ergebnis = f"Deine Lösung: {loesung}. Das war richtig."
@@ -118,6 +124,9 @@ class Ui(QtWidgets.QMainWindow):
         title = f"Aufgabe {self.score.counter+1}/{self.score.target}"
         self.group_aufgabe.setTitle(title)
 
+        self.fortschritt_richtig.setValue(self.score.score)
+        self.fortschritt_total.setValue(self.score.counter)
+
     def set_statusbar(self) -> None:
         status = f"Aufgabe {self.score.counter}/{self.score.target}, {self.score.score} richtig."
         self.statusbar.showMessage(status)
@@ -142,6 +151,8 @@ class Ui(QtWidgets.QMainWindow):
         self.button_loesen.clicked.connect(self.auswerten)
 
         self.label_richtig = self.findChild(QtWidgets.QLabel, "label_richtig")
+        self.fortschritt_richtig = self.findChild(QtWidgets.QProgressBar, "fortschritt_richtig")
+        self.fortschritt_total = self.findChild(QtWidgets.QProgressBar, "fortschritt_total")
 
         self.statusbar = self.findChild(QtWidgets.QStatusBar, "statusbar")
 
